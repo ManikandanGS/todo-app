@@ -594,3 +594,18 @@ body {
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
+
+/* ─── Reduced motion & pointer affordances ───── */
+@media (pointer: coarse) {
+  .task-actions { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
