@@ -61,6 +61,12 @@
           autocomplete="off"
           aria-label="New task input"
         />
+        <div class="priority-picker" role="group" aria-label="Task priority">
+          <button type="button" class="priority-btn active" data-priority="none" aria-pressed="true" title="No priority">—</button>
+          <button type="button" class="priority-btn" data-priority="low" aria-pressed="false" title="Low priority">L</button>
+          <button type="button" class="priority-btn" data-priority="medium" aria-pressed="false" title="Medium priority">M</button>
+          <button type="button" class="priority-btn" data-priority="high" aria-pressed="false" title="High priority">H</button>
+        </div>
         <button id="add-btn" class="add-btn" aria-label="Add task">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -68,6 +74,35 @@
           </svg>
         </button>
       </div>
+    </section>
+
+    <!-- Search & sort toolbar -->
+    <section class="toolbar glass-card" aria-label="Search and sort tasks">
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="search"
+          id="search-input"
+          class="search-input"
+          placeholder="Search tasks…"
+          autocomplete="off"
+          aria-label="Search tasks"
+        />
+        <button id="clear-search-btn" class="clear-search-btn" aria-label="Clear search" hidden>×</button>
+      </div>
+      <label class="sort-label">
+        <span class="sort-label-text">Sort</span>
+        <select id="sort-select" class="sort-select" aria-label="Sort tasks">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="priority">Priority</option>
+          <option value="alphabetical">A → Z</option>
+          <option value="dueDate">Due date</option>
+        </select>
+      </label>
     </section>
 
     <!-- Filter tabs -->
@@ -111,6 +146,19 @@
     <div class="modal-card glass-card">
       <h2 class="modal-title">Edit Task</h2>
       <input type="text" id="edit-input" class="task-input modal-input" maxlength="200" aria-label="Edit task text" />
+      <div class="modal-field">
+        <label for="edit-priority" class="modal-field-label">Priority</label>
+        <select id="edit-priority" class="modal-select" aria-label="Edit task priority">
+          <option value="none">No priority</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label for="edit-due-date" class="modal-field-label">Due date</label>
+        <input type="date" id="edit-due-date" class="modal-date-input" aria-label="Edit task due date" />
+      </div>
       <div class="modal-actions">
         <button id="cancel-edit-btn" class="modal-btn cancel-btn">Cancel</button>
         <button id="save-edit-btn" class="modal-btn save-btn">Save</button>
@@ -119,7 +167,10 @@
   </div>
 
   <!-- Toast notification -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span id="toast-message" class="toast-message"></span>
+    <button id="toast-action" class="toast-action" hidden>Undo</button>
+  </div>
 
   <script type="module" src="main.js"></script>
 </body>

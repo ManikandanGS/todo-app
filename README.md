@@ -16,6 +16,11 @@ Open http://localhost:8080
 
 - Add, edit, toggle, and delete tasks
 - Filter: All / Active / Completed
+- **Search** tasks by text (press `/` to focus search)
+- **Priority** levels: low, medium, high (set when adding or editing)
+- **Due dates** with overdue and "due today" highlighting
+- **Sort** by newest, oldest, priority, alphabetical, or due date
+- **Undo delete** — restore a deleted task within 5 seconds
 - Persist tasks in LocalStorage (`luminate_tasks`)
 - Validate stored data on load (corrupt or malicious records are ignored)
 - Demo tasks seed only on first visit (when the storage key is missing)
