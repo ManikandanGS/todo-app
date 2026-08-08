@@ -4,6 +4,23 @@
  */
 
 const TASK_ID_PATTERN = /^[\w-]+$/;
+const PRIORITIES = new Set(['low', 'medium', 'high']);
+
+/**
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+function isOptionalDueDate(value) {
+  return value === undefined || (typeof value === 'number' && Number.isFinite(value));
+}
+
+/**
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+function isOptionalPriority(value) {
+  return value === undefined || (typeof value === 'string' && PRIORITIES.has(value));
+}
 
 /**
  * @param {unknown} task
@@ -11,19 +28,21 @@ const TASK_ID_PATTERN = /^[\w-]+$/;
  */
 export function isValidTask(task) {
   if (!task || typeof task !== 'object') return false;
-  const { id, text, completed } = /** @type {Record<string, unknown>} */ (task);
+  const { id, text, completed, priority, dueDate } = /** @type {Record<string, unknown>} */ (task);
   return (
     typeof id === 'string' &&
     TASK_ID_PATTERN.test(id) &&
     typeof text === 'string' &&
-    typeof completed === 'boolean'
+    typeof completed === 'boolean' &&
+    isOptionalPriority(priority) &&
+    isOptionalDueDate(dueDate)
   );
 }
 
 /**
  * Parse a LocalStorage raw string into validated tasks.
  * @param {string | null} raw - Result of localStorage.getItem; null means key missing
- * @returns {{ tasks: Array<{id: string, text: string, completed: boolean, createdAt?: number}>, missing: boolean }}
+ * @returns {{ tasks: Array<{id: string, text: string, completed: boolean, createdAt?: number, priority?: string, dueDate?: number}>, missing: boolean }}
  */
 export function parseStoredTasks(raw) {
   if (raw === null || raw === undefined) {
@@ -45,3 +64,4 @@ export function parseStoredTasks(raw) {
 }
 
 export const STORAGE_KEY = 'luminate_tasks';
+export const SORT_KEY = 'luminate_sort';

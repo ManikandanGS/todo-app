@@ -14,6 +14,30 @@ describe('isValidTask', () => {
     );
   });
 
+  it('accepts optional priority and dueDate fields', () => {
+    assert.equal(
+      isValidTask({
+        id: 'abc123',
+        text: 'Ship feature',
+        completed: false,
+        priority: 'high',
+        dueDate: 1700000000000,
+      }),
+      true
+    );
+  });
+
+  it('rejects invalid priority and dueDate values', () => {
+    assert.equal(
+      isValidTask({ id: 'ok', text: 'x', completed: false, priority: 'urgent' }),
+      false
+    );
+    assert.equal(
+      isValidTask({ id: 'ok', text: 'x', completed: false, dueDate: 'tomorrow' }),
+      false
+    );
+  });
+
   it('rejects ids that could break out of HTML attributes', () => {
     assert.equal(
       isValidTask({ id: '" onfocus="alert(1)', text: 'x', completed: false }),
@@ -46,8 +70,9 @@ describe('parseStoredTasks', () => {
     const raw = JSON.stringify([
       { id: 'good1', text: 'Keep me', completed: false },
       { id: '"><img src=x onerror=alert(1)>', text: 'drop', completed: false },
-      { id: 'good2', text: 'Also keep', completed: true },
+      { id: 'good2', text: 'Also keep', completed: true, priority: 'low' },
       { not: 'a task' },
+      { id: 'bad', text: 'nope', completed: false, priority: 'critical' },
     ]);
     const result = parseStoredTasks(raw);
     assert.equal(result.missing, false);
